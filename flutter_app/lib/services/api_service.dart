@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
 import '../models/prediction_model.dart';
 import '../models/history_model.dart';
 
@@ -28,15 +30,33 @@ class ApiService {
     return 'http://10.0.2.2:8000/api';
   }
 
+  static Uri _endpoint(String path) {
+    if (baseUrl.isEmpty) {
+      throw ApiException(
+        'Online disease detection is not configured. Deploy the FastAPI backend, set the API_BASE_URL repository variable, and rebuild the site.',
+      );
+    }
+    return Uri.parse('$baseUrl/$path');
+  }
+
+  static Future<http.MultipartFile> _imagePart(XFile imageFile) async {
+    final mimeType = imageFile.mimeType ?? lookupMimeType(imageFile.name);
+    if (mimeType == null || !mimeType.startsWith('image/')) {
+      throw ApiException('Could not determine the selected image type.');
+    }
+    return http.MultipartFile.fromBytes(
+      'file',
+      await imageFile.readAsBytes(),
+      filename: imageFile.name,
+      contentType: MediaType.parse(mimeType),
+    );
+  }
+
   /// Upload image to backend storage and receive public URL.
   static Future<String> uploadImage(XFile imageFile) async {
     try {
-      var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/upload'));
-      request.files.add(http.MultipartFile.fromBytes(
-        'file',
-        await imageFile.readAsBytes(),
-        filename: imageFile.name,
-      ));
+      var request = http.MultipartRequest('POST', _endpoint('upload'));
+      request.files.add(await _imagePart(imageFile));
 
       var response = await request.send();
       var responseData = await response.stream.bytesToString();
@@ -56,12 +76,8 @@ class ApiService {
   /// Upload image and get disease prediction.
   static Future<PredictionResult> predictDisease(XFile imageFile) async {
     try {
-      var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/predict'));
-      request.files.add(http.MultipartFile.fromBytes(
-        'file',
-        await imageFile.readAsBytes(),
-        filename: imageFile.name,
-      ));
+      var request = http.MultipartRequest('POST', _endpoint('predict'));
+      request.files.add(await _imagePart(imageFile));
       
       var response = await request.send();
       var responseData = await response.stream.bytesToString();
@@ -80,7 +96,7 @@ class ApiService {
   static Future<void> saveHistory(DetectionHistory history) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/history'),
+        _endpoint('history'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(history.toJson()),
       );
@@ -96,7 +112,7 @@ class ApiService {
   /// Fetch user history from cloud/local database.
   static Future<List<DetectionHistory>> getHistory(String uid) async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/history/$uid'));
+      final response = await http.get(_endpoint('history/$uid'));
       
       if (response.statusCode == 200) {
         List<dynamic> body = json.decode(response.body);
@@ -112,7 +128,7 @@ class ApiService {
   /// Fetch active database status (MongoDB Atlas, Firebase, or SQLite).
   static Future<Map<String, dynamic>> getDatabaseStatus() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/db/status'));
+      final response = await http.get(_endpoint('db/status'));
       if (response.statusCode == 200) {
         return json.decode(response.body);
       }

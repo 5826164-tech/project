@@ -22,6 +22,8 @@ dependencies:
   
   # HTTP
   http: ^1.2.1
+  http_parser: ^4.1.2
+  mime: ^2.1.0
   
   # State Management
   provider: ^6.1.2
