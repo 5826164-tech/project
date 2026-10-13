@@ -1,0 +1,28 @@
+# NOTE: TensorFlow 2.16 requires Python 3.9 – 3.11.
+# If you have Python 3.12+, install Python 3.11 separately and use it for this venv.
+# Download Python 3.11: https://www.python.org/downloads/release/python-3119/
+
+# API
+fastapi==0.111.0
+uvicorn[standard]==0.30.0
+
+# AI / ML (requires Python 3.11 or below)
+tensorflow==2.16.1
+numpy==1.26.4
+
+# Image handling
+pillow==10.3.0
+
+# Dataset download
+kagglehub
+
+# API utilities
+python-multipart==0.0.9
+aiofiles==23.2.1
+python-dotenv==1.0.1
+python-jose[cryptography]==3.3.0
+
+# Cloud Databases
+firebase-admin==6.5.0
+pymongo==4.18.3
+dnspython>=2.7.0

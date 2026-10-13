@@ -1,0 +1,28 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+venv/
+.env
+*.egg-info/
+
+# Firebase / secrets
+firebase-credentials.json
+*.json.key
+
+# Model (too large for git)
+app/model/plant_model.h5
+app/model/plant_model.keras
+
+# Dataset
+datasets/
+
+# Runtime data
+plantcare.db
+uploads/*
+
+# IDE
+.vscode/
+.idea/
+*.swp

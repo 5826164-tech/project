@@ -1,0 +1,15 @@
+.venv/
+venv/
+.vscode/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!backend/.env.example
+*.db
+backend/uploads/*
+backend/app/model/plant_model.h5
+backend/app/model/plant_model.keras
+**/google-services.json
+*.jks
+*.keystore
