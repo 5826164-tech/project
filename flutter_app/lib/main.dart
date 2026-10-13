@@ -32,7 +32,7 @@ void main() async {
         if (apiKey.isNotEmpty && appId.isNotEmpty &&
             messagingSenderId.isNotEmpty && projectId.isNotEmpty) {
           await Firebase.initializeApp(
-            options: const FirebaseOptions(
+            options: FirebaseOptions(
               apiKey: apiKey,
               appId: appId,
               messagingSenderId: messagingSenderId,
