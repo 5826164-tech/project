@@ -87,13 +87,17 @@ PlantCare AI now comes with **Universal Cloud Database Support**:
 cd "c:\Users\vedan\OneDrive\Desktop\om bhaiya\backend"
 python -m venv venv
 venv\Scripts\activate
-pip install -r requirements.txt
+pip install -r requirements-api.txt
 copy .env.example .env
 ```
 
+Set `PLANTNET_API_KEY` in `backend/.env` for local use. For a cloud deployment, add it as a secret environment variable on the backend host. Never put this key in the Flutter app or commit it to GitHub.
+
 ---
 
-## STEP 3 — Download Dataset and Train AI Model
+## STEP 3 — Optional Legacy Model Training
+
+Plant disease predictions now use the PlantNet API. Training the local TensorFlow model is not required for the current API path.
 
 > **IMPORTANT**: Requires a Kaggle account. Training takes 30-60 min (GPU) or 2-4 hours (CPU).
 
@@ -112,7 +116,7 @@ copy .env.example .env
    ```
    Model saved to: `app/model/plant_model.h5`
 
-> **NOTE**: The app works WITHOUT a trained model — it returns mock data for development/testing.
+> The locally trained model is retained for experimentation but is not used by the PlantNet prediction route.
 
 ---
 

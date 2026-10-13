@@ -1,6 +1,6 @@
 ﻿# 🌿 PlantCare AI — AI-Based Plant Disease Detection System
 
-An AI-powered mobile application to detect plant diseases from leaf images using MobileNetV2 deep learning.
+An AI-powered mobile application to detect plant diseases from leaf images using the PlantNet disease identification API.
 
 ## Project Structure
 
@@ -24,10 +24,16 @@ The Flutter web app can be published with GitHub Pages using the workflow in `.g
 
 Push to `main` or `master` after configuring the variables. The workflow publishes the app to Pages; its URL appears in the workflow deployment summary.
 
+### Deploy the Disease API
+
+The repository includes a Render Blueprint for the lightweight PlantNet proxy. In Render, create a new Blueprint from this repository and enter a newly generated PlantNet API key when prompted for `PLANTNET_API_KEY`. Do not put the key in Flutter or commit it to GitHub.
+
+After Render gives the service a public URL, set the GitHub Actions repository variable `API_BASE_URL` to that URL plus `/api` (for example, `https://plantcare-api.onrender.com/api`), then rerun the Pages workflow. PlantNet supports a limited set of diseases and plant species, accepts JPEG/PNG images, and spends one identification credit per request. Render's free service may sleep when idle.
+
 ## Tech Stack
 - **Mobile App**: Flutter + Dart
 - **Backend**: Python FastAPI
-- **AI Model**: MobileNetV2 (Transfer Learning on PlantVillage dataset)
+- **Disease Detection**: PlantNet diseases identification API
 - **Database**: Firebase Firestore + Firebase Auth + Firebase Storage
 - **Dataset**: PlantVillage (38 disease classes, 54,000+ images)
 
