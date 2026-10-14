@@ -10,7 +10,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 app = FastAPI(
     title="Plant Disease Detection API",
-    description="Plant disease identification through PlantNet with Multi-Cloud Database support.",
+    description="Plant disease classification using the local TensorFlow model with Multi-Cloud Database support.",
     version="1.0.0",
 )
 
