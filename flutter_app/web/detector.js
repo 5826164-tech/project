@@ -125,7 +125,7 @@ async function analyzeImage() {
     if (!label || score < 0.45) {
       setResult('uncertain', 'UNCERTAIN', 'No clear match', 'The image did not closely match a class this model knows. Try a closer, well-lit leaf photo.', label, score);
     } else if (fungalClasses.has(label)) {
-      setResult('fungus', 'FUNGAL CLASS', 'Possible fungus detected', 'The model matched this leaf to a fungal disease class. Treat this as a screening result, not a confirmed diagnosis.', label, score);
+      setResult('fungus', 'FUNGAL CLASS', 'Possible fungal infection detected', 'The model matched this leaf to a fungal disease class. Treat this as a screening result, not a confirmed diagnosis.', label, score);
     } else {
       setResult('clear', 'NO FUNGAL CLASS', 'No fungus detected', 'The model matched a healthy, bacterial, or viral class rather than a fungal class.', label, score);
     }
