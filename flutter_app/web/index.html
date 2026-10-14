@@ -23,13 +23,34 @@
       <span class="brand-mark" aria-hidden="true">P</span>
       <span>PlantCare <span class="brand-light">AI</span></span>
     </a>
-    <div class="model-status" id="model-status" role="status" aria-live="polite">
-      <span class="status-dot" aria-hidden="true"></span>
-      <span id="model-status-text">Loading local model</span>
+    <div class="session-actions">
+      <div class="model-status" id="model-status" role="status" aria-live="polite" hidden>
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="model-status-text">Loading local model</span>
+      </div>
+      <button class="logout-button" id="logout-button" type="button" hidden>Log out</button>
     </div>
   </header>
 
-  <main>
+  <main class="login-view" id="login-view">
+    <section class="login-panel" aria-labelledby="login-title">
+      <p class="eyebrow">PLANTCARE AI</p>
+      <h1 id="login-title">Welcome back</h1>
+      <p class="intro-copy">Log in to continue caring for your plants.</p>
+      <form id="login-form" class="login-form">
+        <label for="login-email">Email</label>
+        <input id="login-email" name="email" type="email" autocomplete="username" required>
+        <label for="login-password">Password</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+        <p class="login-error" id="login-error" role="alert" hidden>Enter an email and password.</p>
+        <button class="analyze-button login-button" type="submit">Login</button>
+      </form>
+      <button class="demo-button" id="demo-login" type="button">Use temp login</button>
+      <p class="demo-note">Demo login is stored in this browser tab only. No account or password is sent to a server.</p>
+    </section>
+  </main>
+
+  <main id="detector-app" hidden>
     <section class="intro" aria-labelledby="page-title">
       <p class="eyebrow">LEAF HEALTH</p>
       <h1 id="page-title">Check a leaf</h1>

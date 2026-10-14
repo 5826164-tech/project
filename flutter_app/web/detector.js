@@ -16,6 +16,14 @@ const fungalClasses = new Set([
 ]);
 
 const ui = {
+  loginView: document.querySelector('#login-view'),
+  detectorApp: document.querySelector('#detector-app'),
+  loginForm: document.querySelector('#login-form'),
+  loginEmail: document.querySelector('#login-email'),
+  loginPassword: document.querySelector('#login-password'),
+  loginError: document.querySelector('#login-error'),
+  demoLogin: document.querySelector('#demo-login'),
+  logout: document.querySelector('#logout-button'),
   modelStatus: document.querySelector('#model-status'),
   modelStatusText: document.querySelector('#model-status-text'),
   input: document.querySelector('#image-input'),
@@ -37,6 +45,47 @@ const ui = {
 let model;
 let selectedFile;
 let previewUrl;
+const demoSessionKey = 'plantcare-demo-session';
+
+function showDetector() {
+  ui.loginView.hidden = true;
+  ui.detectorApp.hidden = false;
+  ui.modelStatus.hidden = false;
+  ui.logout.hidden = false;
+}
+
+function signIn(email, password) {
+  if (!email.trim() || !password) {
+    ui.loginError.hidden = false;
+    return;
+  }
+  sessionStorage.setItem(demoSessionKey, 'active');
+  showDetector();
+}
+
+ui.loginForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  ui.loginError.hidden = true;
+  signIn(ui.loginEmail.value, ui.loginPassword.value);
+});
+
+ui.demoLogin.addEventListener('click', () => {
+  ui.loginEmail.value = 'demo@plantcare.ai';
+  ui.loginPassword.value = 'demo123';
+  ui.loginError.hidden = true;
+  signIn(ui.loginEmail.value, ui.loginPassword.value);
+});
+
+ui.logout.addEventListener('click', () => {
+  sessionStorage.removeItem(demoSessionKey);
+  ui.detectorApp.hidden = true;
+  ui.loginView.hidden = false;
+  ui.modelStatus.hidden = true;
+  ui.logout.hidden = true;
+  ui.loginPassword.value = '';
+});
+
+if (sessionStorage.getItem(demoSessionKey) === 'active') showDetector();
 
 function setResult(outcome, state, heading, copy, label, score) {
   ui.panel.dataset.outcome = outcome;
